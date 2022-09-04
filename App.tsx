@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Provider } from 'react-redux';
+
+import Loading from './screens/loading/Loading';
+import Navigation from './components/navigation/Navigation';
+import { store } from './store/MainStore';
+
+
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [appLoaded, setAppLoaded] = useState<boolean>(false);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  useEffect(() => {
+    setTimeout(() => {
+      setAppLoaded(true)
+    }, 1000)
+  }, []);
+
+  if(appLoaded) {
+    return (
+      <Provider store={store}>
+        <Navigation/>
+      </Provider>
+    );
+  } else {
+    return (
+      <Loading/>
+    );
+  }
+}
